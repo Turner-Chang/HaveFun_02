@@ -1,0 +1,28 @@
+﻿<input type="file">
+<button>上傳</button>
+
+
+@section Scripts
+{ <script>
+		  const input = document.querySelector('input[type="file"]');
+		  document.querySelector("button").addEventListener("click", () => {
+			  const file = input.files[0];
+			  const fileReader = new FileReader();
+			  fileReader.addEventListener("load", (event) => {
+				  let base64Str = event.target.result;
+				  base64Str = base64Str.split(",")[1];
+				  fetch("fileUpload", {
+					  method: "POST",
+					  headers: {
+						  "Content-Type": "application/json"
+					  },
+					  body: JSON.stringify({
+						  file: base64Str
+					  })
+				  });
+			  });
+			  fileReader.readAsDataURL(file);
+		  });
+
+    </script>
+}
